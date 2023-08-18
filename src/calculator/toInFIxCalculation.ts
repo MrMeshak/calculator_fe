@@ -1,14 +1,12 @@
 import { MathCalculationComponent } from './calculator.model';
 import { splitCalculationStr } from './splitCalculationStr';
 
-export function toInFixCalculation(calculationStr: string) {
-  const calculationStrArr = splitCalculationStr(calculationStr);
-
-  const calculation: MathCalculationComponent[] = calculationStrArr.map((str) => {
-    if (str === '+' || str === '-' || str === '/' || str === '*' || str === '(' || str == ')') {
-      return str;
+export function toInFixCalculation(calculationStrArr: string[]) {
+  const calculation: MathCalculationComponent[] = calculationStrArr.map((component) => {
+    if (component === '+' || component === '-' || component === '/' || component === '*' || component === '(' || component == ')') {
+      return component;
     }
-    return Number(str);
+    return Number(component);
   });
   console.log(calculation);
   return calculation;

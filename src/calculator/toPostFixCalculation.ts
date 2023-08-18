@@ -27,6 +27,7 @@ function shuntOpeningBracket(stack: MathCalculationOperation[]) {
 
 function shuntClosingBracket(stack: MathCalculationOperation[], queue: MathCalculationComponent[]) {
   let prevOperation = stack.pop();
+
   while (prevOperation && prevOperation !== '(') {
     queue.push(prevOperation);
     prevOperation = stack.pop();

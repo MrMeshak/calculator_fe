@@ -1,16 +1,12 @@
-import { toInFixCalculation } from '@/calculator/toInFIxCalculation';
-import { toPostFixCalculation } from '@/calculator/toPostFixCalculation';
-import { postFixEvaluator } from '@/calculator/postFixEvaluator';
+import { calculate } from '@/calculator/calculate';
 
 export default function Home() {
-  const inFixCalculation = toInFixCalculation('-3*-(-5*4+-3.45*2)-1');
-  const postFixCalcuation = toPostFixCalculation(inFixCalculation);
-  console.log(postFixCalcuation);
-  const evaluatedValue = postFixEvaluator(postFixCalcuation);
-  console.log(evaluatedValue);
+  const calculationStr = '(1+10)(4+1)*3';
+  const result = calculate(calculationStr);
   return (
     <main className="">
-      <h1>home</h1>
+      <h1>{calculationStr}</h1>
+      {result.__typename === 'ICalculationSuccess' ? <h2>{result.value}</h2> : null}
     </main>
   );
 }
