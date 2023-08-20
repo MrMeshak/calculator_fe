@@ -11,6 +11,7 @@ export function postFixEvaluator(postFixCalculation: MathPostFixCalculationCompo
         return;
       }
       stack.push(num1 + num2);
+      console.log('Evaluator Stack', stack);
       return;
     }
 
@@ -21,6 +22,7 @@ export function postFixEvaluator(postFixCalculation: MathPostFixCalculationCompo
         return;
       }
       stack.push(num1 - num2);
+      console.log('Evaluator Stack', stack);
       return;
     }
 
@@ -31,6 +33,7 @@ export function postFixEvaluator(postFixCalculation: MathPostFixCalculationCompo
         return;
       }
       stack.push(num1 * num2);
+      console.log('Evaluator Stack', stack);
       return;
     }
 
@@ -41,6 +44,7 @@ export function postFixEvaluator(postFixCalculation: MathPostFixCalculationCompo
         return;
       }
       stack.push(num1 / num2);
+      console.log('Evaluator Stack', stack);
       return;
     }
 

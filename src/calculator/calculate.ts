@@ -30,7 +30,7 @@ export function calculate(calcuationStr: string): CalculationResult {
   if (!result) {
     return {
       __typename: 'ICalculationError',
-      message: 'Calculation Error'
+      message: 'Calculation Undefined'
     };
   }
 
