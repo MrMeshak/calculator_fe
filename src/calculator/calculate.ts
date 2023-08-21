@@ -18,10 +18,17 @@ interface ICalculationSuccess {
 type CalculationResult = ICalculationError | ICalculationSuccess;
 
 export function calculate(calcuationStr: string): CalculationResult {
+  if (calcuationStr === '') {
+    return {
+      __typename: 'ICalculationError',
+      message: 'Calculation string is empty'
+    };
+  }
+
   if (!isValidCalculationStr(calcuationStr)) {
     return {
       __typename: 'ICalculationError',
-      message: 'Invalid calculation'
+      message: 'Invalid calculation string'
     };
   }
 

@@ -1,13 +1,66 @@
 import { calculate } from '../calculate';
+import { splitCalculationStr } from '../splitCalculationStr';
 
 describe('Calculator - Calculate', () => {
   describe('When calculationStr is invalid', () => {
-    describe('- calculationStr is empty', () => {});
-    describe('- calculationStr contains invalid characters', () => {});
-    describe('- calculationStr has unbalanced brackets', () => {});
-    describe('- calculationStr contains invalid operations', () => {});
-    describe('- calculationStr contains multiple decimal points within a single number', () => {});
-    describe('- ', () => {});
+    describe('- calculationStr is empty', () => {
+      it('[""] (empty string) should return ICalculationError', () => {
+        const calculationStr = '';
+        const result = calculate(calculationStr);
+        const expected = { __typename: 'ICalculationError', message: 'Calculation string is empty' };
+        expect(result).toMatchObject(expected);
+      });
+    });
+    describe.each([['invalid chars', '(1+a)*b', { __typename: 'ICalculationError', message: 'Invalid calculation string' }]])(
+      '- calculationStr contains invalid characters',
+      (note, calcuationStr, expected) => {
+        it(`[${calcuationStr}] (${note}) should return ICalculationError with message`, () => {
+          expect(calculate(calcuationStr)).toMatchObject(expected);
+        });
+      }
+    );
+    describe.each([
+      //prettier-ignore
+      ['opening bracket before closing bracket', '1+2)*(3', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      ['opening brackets > closing brackets', '(1+2)*(3', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      ['closing brackets > opening brackets', '(1+2)*3)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }]
+    ])('- calculationStr has unbalanced brackets', (note, calcuationStr, expected) => {
+      it(`[${calcuationStr}] (${note}) should return ICalculationError with message`, () => {
+        expect(calculate(calcuationStr)).toMatchObject(expected);
+      });
+    });
+
+    describe.each([
+      [' ** ', '1**2', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' */ ', '1*/2', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' /* ', '1/*2', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' // ', '1//2', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' () ', '1*()', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' -) ', '(3+2-)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' +) ', '(3+2+)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' *) ', '(3+2*)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' /) ', '(3+2/)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' /* ', '(3/*2)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' -* ', '(3-/)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' -/ ', '(3-/2)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' +* ', '(3+*2)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' +/ ', '(3+/2)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' (* ', '(*3*5)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }],
+      [' (/ ', '(/3*5)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }]
+    ])('- calculationStr contains invalid operations', (note, calcuationStr, expected) => {
+      it(`[${calcuationStr}] (${note}) should return ICalculationError with message`, () => {
+        expect(calculate(calcuationStr)).toMatchObject(expected);
+      });
+    });
+
+    describe.each([['multiple decimal points', '(1.345.4*123..)', { __typename: 'ICalculationError', message: 'Invalid calculation string' }]])(
+      '- calculationStr contains multiple decimal points within a single number',
+      (note, calculationStr, expected) => {
+        it(`[${note}] (${calculationStr} should return ICalculationError with message`, () => {
+          expect(calculate(calculationStr)).toMatchObject(expected);
+        });
+      }
+    );
   });
 
   describe('When calculationStr is valid', () => {

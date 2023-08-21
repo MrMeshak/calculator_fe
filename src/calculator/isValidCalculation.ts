@@ -19,11 +19,10 @@ export function isValidCalculationStr(calcuationStr: string) {
     }
 
     if (i > 0) {
-      invalidOperators.forEach((operator) => {
-        if (operator[0] === calcuationStr[i - 1] && operator[1] === calcuationStr[i]) {
+      for (let j = 0; j < invalidOperators.length; j++)
+        if (invalidOperators[j][0] === calcuationStr[i - 1] && invalidOperators[j][1] === calcuationStr[i]) {
           return false;
         }
-      });
     }
   }
 
@@ -35,12 +34,12 @@ export function isValidCalculationStr(calcuationStr: string) {
     return false;
   }
 
-  const sections = calcuationStr.split(/[\+\-\*\/\(\)]g/);
-  sections.forEach((section) => {
-    if (section.length > 0 && Number.isNaN(Number(section)) && !Number.isFinite(Number(section))) {
+  const sections = calcuationStr.split(/[\+\-\*\/\(\)]/g);
+  for (let i = 0; i < sections.length; i++) {
+    if (sections[i].length > 0 && Number.isNaN(Number(sections[i])) && !Number.isFinite(Number(sections[i]))) {
       return false;
     }
-  });
+  }
 
   return true;
 }
